@@ -17,6 +17,67 @@ A plain-language diary of this project, so nothing is ever lost between sessions
 
 ---
 
+## 26 July 2026 (evening) — Layer 2: it stops looking like a spreadsheet
+
+**What we set out to do:** the engine was right but the game was bland, and it
+needed two people. Both fixed.
+
+**The board became a place.** It now climbs through five painted zones —
+riverbank, jungle, ruins, temple, shrine — with water lines, leaves and trailing
+vines, fallen blocks, carved lattice, and light spilling from the top. Every
+snake and ladder has a name. **The look is drawn from Moksha Patam**, the painted
+Indian cloth board this game descends from, where ladders were virtues and snakes
+were vices. That is why it is gold-and-vermilion on lamp-black rather than
+generic jungle green.
+
+**Everything on screen is drawn by code.** No images, no fonts, no sound files,
+no frameworks. This was a deliberate decision once you mentioned possibly
+releasing as an app: **there is nothing in the game that needs a licence.** The
+sound is synthesised on the spot; the board texture is generated from a fixed
+seed so it looks hand-made but is identical every time.
+
+**Single player.** One computer opponent, Chotu. The neat part is that Chotu is
+not new code — he is an ordinary player row with no phone attached, and his turns
+go through the same AutoPlay machinery that already covered a friend whose timer
+ran out. The referee still rolls every dice.
+
+**Turns cut to 15 seconds**, and a new rule: **benched, not removed.**
+
+**A decision worth remembering — why benching counts turns, not minutes.** The
+obvious rule was "remove someone after 2 minutes". Two problems. There is no way
+to rejoin a game in progress, so removal is permanent — and phones stop pinging
+within a minute of going into the background, so a friend answering a text looks
+exactly like a friend who left. And two minutes means four of your own turns in a
+duel but only one in a room of eight. So instead: after **three of your own
+turns** roll themselves you drop out of the turn order, your seat and token stay
+put, and the moment your phone speaks again you are back in. No button.
+
+**A bug written and caught the same evening.** The first version of benching
+applied everywhere — including solo games. Put your phone down, lose three turns,
+get benched, and since that leaves the bot as the only player still in the turn
+order, "last one standing" fires and you return to *"Chotu wins"*. Losing a game
+you were not playing against anyone, because you looked at a message, is a rotten
+thing to happen. Fixed in 0015: benching only applies in shared games.
+
+**The anti-cheat proved itself by accident.** While testing, Claude's diagnostic
+code accidentally replaced the browser's login with a different anonymous user.
+The game immediately stopped responding — because the server refused to let a
+non-player roll for a game they were not in. That is exactly the intended
+behaviour, demonstrated under an unplanned attack.
+
+**Verified against the live server, not just locally:** a complete single player
+game played through to a win on exactly 100, snakes and ladders firing correctly,
+turn order correct, Chotu's moves recorded as automatic and correctly not counted
+against him, the win screen and Play again both working. Network traffic was
+recorded during a clean run to confirm the app makes **only** the calls it should.
+
+**SQL run:** 0014 (benching), 0015 (the solo fix).
+**Still to run:** 0016, which retires the old `roll_dice`. It is only safe once
+the new app is live, because that is the release where the app stops calling it —
+now confirmed by watching the network.
+
+---
+
 ## 26 July 2026 (later) — the game goes live
 
 **What we set out to do:** get Saap-Sidi off the laptop and onto the internet, so

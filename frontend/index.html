@@ -8,7 +8,7 @@
 
   <!-- Android + desktop read this file to offer "install app". -->
   <link rel="manifest" href="manifest.webmanifest" />
-  <meta name="theme-color" content="#12121a" />
+  <meta name="theme-color" content="#120F0C" />
 
   <!-- iPhone ignores the manifest, so it needs its own set of tags. -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -17,65 +17,142 @@
   <meta name="apple-mobile-web-app-title" content="Saap-Sidi" />
   <link rel="apple-touch-icon" href="icons/icon-180.png" />
 
-  <!-- Browser tab icon. -->
   <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16.png" />
 
   <link rel="stylesheet" id="app-css" href="style.css" />
 </head>
 <body>
-  <main id="app">
-    <h1>Saap-Sidi</h1>
-    <p id="status" class="muted">Starting…</p>
+<div class="stage">
 
-    <!-- Screen 1: choose a name (first time only) -->
-    <section id="name-screen" class="screen hidden">
-      <label for="name-input">Your name</label>
-      <input id="name-input" type="text" maxlength="16" placeholder="e.g. Itsu" />
-      <button id="join-btn" class="primary">Join lobby</button>
-    </section>
+  <!-- ========================= 1. WELCOME ========================= -->
+  <section class="screen on" id="welcome-screen">
+    <div class="crest">
+      <svg viewBox="0 0 100 100" aria-hidden="true">
+        <defs>
+          <linearGradient id="crestGold" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#F2CE72"/><stop offset="1" stop-color="#B8892A"/>
+          </linearGradient>
+        </defs>
+        <circle cx="50" cy="50" r="46" fill="none" stroke="#3A2E26" stroke-width="1.5"/>
+        <circle cx="50" cy="50" r="41" fill="none" stroke="url(#crestGold)" stroke-width="1" opacity=".5"/>
+        <path d="M50 79 C29 79 25 62 36 54 C46 46 61 50 61 39 C61 31 53 27 47 31"
+              fill="none" stroke="url(#crestGold)" stroke-width="4.5"
+              stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M47 31 C41 25 45 16 53 16 C62 16 66 23 63 29"
+              fill="none" stroke="url(#crestGold)" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="56" cy="23" r="1.9" fill="#120F0C"/>
+      </svg>
+      <h1 class="wordmark">Saap&#8209;<em>Sidi</em></h1>
+      <p class="tagline">Snakes &amp; Ladders</p>
+    </div>
 
-    <!-- Screen 2: the lobby -->
-    <section id="lobby-screen" class="screen hidden">
-      <h2>Lobby</h2>
-      <ul id="player-list"></ul>
-      <div class="actions">
-        <button id="ready-btn">I'm ready</button>
-        <button id="start-btn" class="primary hidden">Start game</button>
+    <hr class="rule"/>
+
+    <div class="doors">
+      <button class="door" id="solo-btn">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="32" r="27" fill="none" stroke="#3A2E26" stroke-width="1.5"/>
+          <circle cx="24" cy="32" r="8" fill="none" stroke="#E3B341" stroke-width="2.5"/>
+          <circle cx="42" cy="32" r="8" fill="none" stroke="#9A8878" stroke-width="2"
+                  stroke-dasharray="3 3"/>
+        </svg>
+        <div>
+          <h2>Single player</h2>
+          <p>Straight into a game against Chotu. No waiting for anyone.</p>
+        </div>
+        <span class="chev">&rsaquo;</span>
+      </button>
+
+      <button class="door" id="lobby-btn">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="32" r="27" fill="none" stroke="#3A2E26" stroke-width="1.5"/>
+          <circle cx="23" cy="26" r="6" fill="none" stroke="#E3B341" stroke-width="2.5"/>
+          <circle cx="41" cy="26" r="6" fill="none" stroke="#C0442E" stroke-width="2.5"/>
+          <circle cx="32" cy="41" r="6" fill="none" stroke="#2F5570" stroke-width="2.5"/>
+        </svg>
+        <div>
+          <h2>Play with friends</h2>
+          <p>Join the room. Up to eight of you, one phone each.</p>
+        </div>
+        <span class="chev">&rsaquo;</span>
+      </button>
+    </div>
+
+    <p class="status-line" id="status">Starting&hellip;</p>
+  </section>
+
+  <!-- ========================= 2. YOUR NAME ========================= -->
+  <section class="screen" id="name-screen">
+    <button class="backlink" data-back>&lsaquo; Back</button>
+    <h2 class="panel-title">What shall we call you?</h2>
+    <label class="field">
+      <span>Your name</span>
+      <input id="name-input" type="text" maxlength="16" placeholder="e.g. Itsu"
+             autocomplete="nickname" />
+    </label>
+    <button id="name-go" class="primary">Continue</button>
+    <p class="hint">Your friends see this above your token. You can change it later.</p>
+  </section>
+
+  <!-- ========================= 3. THE LOBBY ========================= -->
+  <section class="screen" id="lobby-screen">
+    <button class="backlink" data-back>&lsaquo; Leave</button>
+    <h2 class="panel-title">The room</h2>
+    <ul id="player-list" class="roster"></ul>
+    <div class="actions">
+      <button id="ready-btn">I'm ready</button>
+      <button id="start-btn" class="primary hidden">Start game</button>
+    </div>
+    <p class="hint" id="lobby-hint">Waiting for friends to arrive.</p>
+  </section>
+
+  <!-- ========================= 4. THE GAME ========================= -->
+  <section class="screen" id="game-screen">
+    <div class="topbar">
+      <button class="backlink" data-back>&lsaquo; Leave</button>
+      <button class="soundtoggle" id="snd-btn" aria-pressed="true">Sound on</button>
+    </div>
+
+    <div>
+      <div class="whoseturn" id="turn-banner"><span class="dot"></span>&hellip;</div>
+      <div class="fuse" id="fuse"><i id="fuse-bar"></i></div>
+    </div>
+
+    <div class="boardwrap">
+      <div class="boardinner" id="board-inner">
+        <svg class="layer" id="zoneart" viewBox="0 0 1000 1000" preserveAspectRatio="none"></svg>
+        <div class="board" id="board"></div>
+        <svg class="layer" id="paths" viewBox="0 0 1000 1000" preserveAspectRatio="none"></svg>
+        <div class="layer" id="pawns"></div>
+        <div class="layer" id="lightfx"></div>
       </div>
-    </section>
+    </div>
 
-    <!-- Screen 3: the game -->
-    <section id="game-screen" class="screen hidden">
-      <div id="turn-banner">…</div>
-      <div id="timer-wrap"><div id="timer-bar"></div></div>
-      <div id="board"></div>
-      <div id="start-area">
-        <span class="muted">Start:</span>
-        <span id="start-row"></span>
+    <div class="dicebay">
+      <div class="dice-stage">
+        <div class="cube" id="cube"></div>
+        <div class="dice-shadow" id="dice-shadow"></div>
       </div>
-      <div class="actions">
-        <button id="roll-btn" class="primary">Roll 🎲</button>
-        <button id="again-btn" class="primary hidden">Play again 🔄</button>
-      </div>
-      <p id="last-move" class="muted"></p>
-      <ul id="score-list"></ul>
-    </section>
-  </main>
+      <button id="roll-btn" class="rollbtn">Roll</button>
+      <button id="again-btn" class="rollbtn hidden">Play again</button>
+    </div>
 
-  <!-- The version stamp. Every phone that loads the game asks for the files
-       marked with this exact version, so bumping it here is what makes an
-       update actually reach people instead of them seeing an old copy.
-       Bump it in sw.js too whenever we publish a change. -->
+    <ul id="score-list" class="scores"></ul>
+  </section>
+</div>
+
+  <!-- The version stamp. Every phone asks for the files marked with this exact
+       version, so bumping it here is what makes an update actually reach people
+       instead of them seeing an old copy. Bump it in sw.js too. -->
   <script>
-    var APP_VERSION = "1.0.0";
+    var APP_VERSION = "1.1.0";
     document.getElementById("app-css").href = "style.css?v=" + APP_VERSION;
   </script>
   <script type="module">
     import("./game.js?v=" + APP_VERSION);
   </script>
 
-  <!-- Registering this is what lets phones install the game as a real app. -->
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", function () {

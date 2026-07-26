@@ -11,7 +11,7 @@
 //
 // When we publish a change, bump APP_VERSION here AND in index.html.
 
-const APP_VERSION = "1.0.0";
+const APP_VERSION = "1.1.0";
 const CACHE = "saap-sidi-" + APP_VERSION;
 
 // The handful of files the game needs to draw its first screen.

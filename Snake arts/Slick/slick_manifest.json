@@ -1,0 +1,57 @@
+{
+  "id": "slick",
+  "source": {
+    "clean": "R05",
+    "marked": "R06",
+    "method": "centreline unwrap \u2014 body sampled perpendicular to the medial axis, then straightened"
+  },
+  "files": {
+    "body": "slick_body.png",
+    "head": "slick_head.png",
+    "tail": "slick_tail.png",
+    "blotch": "slick_blotch.png"
+  },
+  "render": {
+    "bodyThicknessPx": 98,
+    "bodyTextureWidthPx": 260,
+    "headLengthPx": 327.1,
+    "tailLengthPx": 304.1,
+    "textureScale": 1.0
+  },
+  "anchors": {
+    "note": "Pixel coordinate WITHIN each sprite that must sit exactly on the spline endpoint. Rotate the sprite to the local tangent about this point.",
+    "head": {
+      "x": 120.2,
+      "y": 176.5,
+      "size": [
+        308,
+        319
+      ],
+      "sitsAt": "spline t=1 minus headLengthPx"
+    },
+    "tail": {
+      "x": 252.9,
+      "y": 22.8,
+      "size": [
+        304,
+        179
+      ],
+      "sitsAt": "spline t=0 plus tailLengthPx"
+    }
+  },
+  "markings": {
+    "texture": "slick_blotch.png",
+    "spacingPx": 96.0,
+    "measuredFrom": "R06 original artwork",
+    "taperStart": 1.0,
+    "taperEnd": 0.5,
+    "rotationJitterDeg": 4,
+    "renderOrder": "above body rope, below head and tail"
+  },
+  "notes": [
+    "body.png is SEAMLESS \u2014 the right edge cross-fades into the left. Tile or stretch freely.",
+    "body.png is CLEAN (no blotches) by design. All discrete markings are procedural stamps.",
+    "body.png spans the full texture height with zero vertical padding, as the rope maps texture height to rope width.",
+    "head.png and tail.png are cut from the ORIGINAL curved artwork, not unwrapped, so they stay undistorted."
+  ]
+}
