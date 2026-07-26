@@ -53,9 +53,11 @@ attempting to cheat.
 ```
 Saap-Sidi/
 ├── PROJECT_LOG.md          the plain-language diary — READ THIS FIRST
-├── frontend/
+├── frontend/               ← the ONLY folder published to players
 │   ├── index.html  style.css  game.js  config.js
-│   └── icons/              app icon, 7 sizes (staged, NOT wired up yet)
+│   ├── manifest.webmanifest  sw.js     the "install as an app" pieces
+│   └── icons/              app icon, 7 sizes
+├── .github/workflows/publish.yml   republishes the site on every push
 ├── supabase/migrations/    every SQL file ever run, in order (0001–0009)
 ├── docs/
 │   ├── decisions.md        detailed technical log
@@ -99,20 +101,18 @@ Everything in Layer 1's core loop, all tested live:
   "abandoned". Both verified directly against the live database. See PROJECT_LOG for
   why the first attempt was wrong.
 
+- **Published and installable** (session 4): live at
+  **https://zzcharles.github.io/Saap-Sidi/**. Manifest, service worker and Apple
+  tags all wired up; installs to a phone home screen with the cobra icon and opens
+  fullscreen. Verified on the live site, not just locally.
+
 ## 4. Known gaps — nothing broken, just absent
 
-- **Icons staged but not wired up.** `frontend/icons/` has 7 sizes. No manifest, no
-  service worker, no Apple tags — so not installable. `docs/icons-how-to-use.md` has
-  a ready-made brief for exactly this job.
-- **Not published.** Runs only on the laptop dev server (`python serve.py`, port
-  5500). GitHub Pages not set up.
 - **Master is still whoever joined first.** I develop on laptop but will PLAY on my
-  phone, and my phone must be master. Sorting this is tied to publishing.
+  phone, and my phone must be master. **This is the next job.**
 - **Latecomers during a live game split off** into a room of their own — mid-game
   joining isn't supported.
 - **AutoPlay needs at least one phone open.** Intentional, harmless.
-- **The dev cache-buster in `index.html`** (`?v=<timestamp>`) must be REMOVED before
-  publishing.
 - `players.is_master` is set but unused — leadership comes from `games.owner_user_id`.
 
 ## 5. Decisions you wouldn't guess from the code
@@ -144,15 +144,24 @@ animations, multiple lobbies with join codes.
 
 In priority order:
 
-1. **Wire up the icons, make it installable, and publish to GitHub Pages.** There's a
-   ready-made brief in `docs/icons-how-to-use.md`. This also unblocks the master
-   question — once it's on my phone, my phone should claim master. Remember to strip
-   the dev cache-buster from `index.html` before publishing.
+1. **Make my phone the master**, now that the game is installed on it.
 2. **Then play it for real with friends** and decide two things by feel: whether 20
    seconds is right, and whether exact-100 is fun or frustrating.
+3. **A redesigned board exists but is NOT built.** A co-designer chat produced
+   `board-config.json` — 7 named snakes, 8 ladders, zones, a hidden snake and hidden
+   ladder, and a "King" snake with a two-square head. The live game still uses the
+   classic layout, deliberately: publish first, play, then change the board. Most of
+   it is a straight data swap; the hidden squares and the per-game randomisation are
+   real work, and the file marks them untested for balance. Note it says max 6
+   players — we do **8**.
 
-Layer 1's core loop is complete, tested and closed out. Session 3 ended with
-everything verified — nothing is left half-built.
+Layer 1 is complete, tested, published and closed out. Nothing is half-built.
+
+**Publishing a change:** push to `main` and the site rebuilds itself
+(`.github/workflows/publish.yml` serves the `frontend/` folder only). Bump
+`APP_VERSION` in **both** `index.html` and `frontend/sw.js` or phones may reuse old
+files. Note that Claude's shell cannot trigger GitHub sign-in prompts — if a push
+ever asks for credentials, it must be run from a normal PowerShell window.
 
 To run locally: `python serve.py` (port 5500), open `http://localhost:5500`.
 Supabase URL and public key are already in `frontend/config.js`. All SQL in

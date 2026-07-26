@@ -17,6 +17,66 @@ A plain-language diary of this project, so nothing is ever lost between sessions
 
 ---
 
+## 26 July 2026 (later) — the game goes live
+
+**What we set out to do:** get Saap-Sidi off the laptop and onto the internet, so
+it can be played on real phones without the laptop being switched on.
+
+**It is published.** The game now lives at:
+
+> **https://zzcharles.github.io/Saap-Sidi/**
+
+**What we did:**
+
+- **Wired up the cobra icons.** Added a manifest file (which is how Android and
+  desktop decide to offer "install this app") plus the separate Apple tags that
+  iPhone needs, because iPhone ignores the manifest entirely. Both sets have to
+  be present at once. The game now installs to a home screen with the cobra icon
+  and opens fullscreen, with no browser address bar.
+- **Added a service worker.** This is the piece that actually makes a website
+  installable. Ours is deliberately **"network first"** — it always tries to
+  fetch the real, current files and only falls back to a stored copy if the
+  signal drops. The tempting alternative, "cache first", would keep showing
+  people an old version of the game after we publish a change, which looks
+  exactly like a bug but isn't. Worth remembering if the game ever seems stuck
+  on an old version.
+- **Removed the dev cache-buster** and replaced it with a proper version stamp,
+  `APP_VERSION`. It appears in two files — `index.html` and `sw.js` — and both
+  must be bumped together when we publish a change.
+- **Put the project on GitHub** as a public repository, `ZzCharles/Saap-Sidi`.
+
+**A decision worth remembering:** GitHub Pages will normally only publish from
+the very top of a project, or from a folder called `docs` — and our `docs` folder
+holds these notes, not the game. Rather than shuffle files around and make the
+project messier, we added a small instruction file
+(`.github/workflows/publish.yml`) that tells GitHub to publish the `frontend`
+folder specifically. **The upshot: pushing a change to GitHub republishes the
+game automatically.** The SQL and these notes stay in the repository but are
+never sent to players.
+
+**One snag along the way:** the first publish attempt failed. Publishing is an
+on-switch that only the repository owner can flip, so the instruction file ran,
+asked permission, and stopped. Flipping *Settings → Pages → Source → GitHub
+Actions* and re-running it fixed it. Nothing was broken — it had just reached a
+locked door.
+
+**Also worth knowing:** the sign-in to GitHub had to be done by hand, in a normal
+PowerShell window. Claude's shell is deliberately blocked from triggering
+password prompts, so account sign-ins will always be a manual step. Windows has
+remembered the sign-in now, so it should not need doing repeatedly.
+
+**Checked on the live site, not just locally:** every file loads, the manifest is
+valid, the service worker is active, all seven icon sizes are served, there are
+no errors, and the game reports **Connected ✓** to Supabase.
+
+**Nothing about the game itself changed.** Same classic board, same rules, same
+8-player limit, same database. This session was purely about delivery.
+
+**Still to do:** the master is still whoever joins first, not your phone. That is
+the next job, and it is easier now that the game is actually on your phone.
+
+---
+
 ## 26 July 2026 — "Play again", and the app icon arrives
 
 **What we set out to do:** fix the most obvious hole in the game — when someone
