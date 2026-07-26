@@ -1,0 +1,45 @@
+# Publishes the game to GitHub Pages.
+#
+# Why this file exists: GitHub Pages can only publish from the top of the repo
+# or from a folder called "docs" — and our "docs" folder holds project notes,
+# not the game. This tells GitHub to publish the "frontend" folder instead, so
+# the project keeps its tidy layout and nothing has to be moved or duplicated.
+#
+# It runs by itself every time we push a change to the main branch.
+
+name: Publish to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # also lets you re-publish by hand from the Actions tab
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# If two pushes happen close together, let the newer one win.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/configure-pages@v5
+
+      # Take ONLY the frontend folder — the SQL, notes and dev server stay
+      # in the repo but are never served to players.
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

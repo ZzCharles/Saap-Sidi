@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Saap-Sidi</title>
+  <meta name="description" content="Online Snakes and Ladders for 2-8 friends, on separate phones." />
+
+  <!-- Android + desktop read this file to offer "install app". -->
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#12121a" />
+
+  <!-- iPhone ignores the manifest, so it needs its own set of tags. -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Saap-Sidi" />
+  <link rel="apple-touch-icon" href="icons/icon-180.png" />
+
+  <!-- Browser tab icon. -->
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16.png" />
+
+  <link rel="stylesheet" id="app-css" href="style.css" />
+</head>
+<body>
+  <main id="app">
+    <h1>Saap-Sidi</h1>
+    <p id="status" class="muted">Starting…</p>
+
+    <!-- Screen 1: choose a name (first time only) -->
+    <section id="name-screen" class="screen hidden">
+      <label for="name-input">Your name</label>
+      <input id="name-input" type="text" maxlength="16" placeholder="e.g. Itsu" />
+      <button id="join-btn" class="primary">Join lobby</button>
+    </section>
+
+    <!-- Screen 2: the lobby -->
+    <section id="lobby-screen" class="screen hidden">
+      <h2>Lobby</h2>
+      <ul id="player-list"></ul>
+      <div class="actions">
+        <button id="ready-btn">I'm ready</button>
+        <button id="start-btn" class="primary hidden">Start game</button>
+      </div>
+    </section>
+
+    <!-- Screen 3: the game -->
+    <section id="game-screen" class="screen hidden">
+      <div id="turn-banner">…</div>
+      <div id="timer-wrap"><div id="timer-bar"></div></div>
+      <div id="board"></div>
+      <div id="start-area">
+        <span class="muted">Start:</span>
+        <span id="start-row"></span>
+      </div>
+      <div class="actions">
+        <button id="roll-btn" class="primary">Roll 🎲</button>
+        <button id="again-btn" class="primary hidden">Play again 🔄</button>
+      </div>
+      <p id="last-move" class="muted"></p>
+      <ul id="score-list"></ul>
+    </section>
+  </main>
+
+  <!-- The version stamp. Every phone that loads the game asks for the files
+       marked with this exact version, so bumping it here is what makes an
+       update actually reach people instead of them seeing an old copy.
+       Bump it in sw.js too whenever we publish a change. -->
+  <script>
+    var APP_VERSION = "1.0.0";
+    document.getElementById("app-css").href = "style.css?v=" + APP_VERSION;
+  </script>
+  <script type="module">
+    import("./game.js?v=" + APP_VERSION);
+  </script>
+
+  <!-- Registering this is what lets phones install the game as a real app. -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("sw.js").catch(function (err) {
+          console.warn("Service worker did not register:", err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

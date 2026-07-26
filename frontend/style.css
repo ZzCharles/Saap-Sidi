@@ -1,0 +1,259 @@
+/* Saap-Sidi — the look. Plain and functional for Layer 1. */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #12121a;
+  color: #f0f0f5;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+#app {
+  width: 100%;
+  max-width: 480px;
+  padding: 24px 16px;
+}
+
+h1 {
+  font-size: 1.6rem;
+  margin-bottom: 8px;
+}
+
+h2 {
+  font-size: 1.2rem;
+  margin: 16px 0 8px;
+}
+
+#status {
+  font-size: 1rem;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #1e1e2a;
+}
+
+#status.muted { color: #9a9ab0; }
+#status.ok    { color: #7ee787; }
+#status.error { color: #ff9492; }
+
+.muted { color: #9a9ab0; }
+.hidden { display: none; }
+
+.screen { margin-top: 20px; }
+
+/* Name entry */
+label {
+  display: block;
+  margin-bottom: 6px;
+  color: #c8c8d8;
+}
+input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #33334a;
+  border-radius: 8px;
+  background: #1e1e2a;
+  color: #f0f0f5;
+  margin-bottom: 12px;
+}
+
+/* Buttons */
+button {
+  padding: 12px 16px;
+  font-size: 1rem;
+  border: 1px solid #33334a;
+  border-radius: 8px;
+  background: #26263a;
+  color: #f0f0f5;
+  cursor: pointer;
+}
+button:hover { background: #303048; }
+button:disabled { opacity: 0.45; cursor: default; }
+button.primary { background: #3b5bdb; border-color: #3b5bdb; }
+button.primary:hover:not(:disabled) { background: #4666e8; }
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+/* Player list */
+#player-list { list-style: none; }
+#player-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: #1e1e2a;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+.pname { font-weight: 600; }
+.tags { display: flex; gap: 6px; }
+
+.tag {
+  font-size: 0.72rem;
+  padding: 3px 8px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.tag-you    { background: #2b3f6b; color: #a9c1ff; }
+.tag-leader { background: #6b4a1f; color: #ffcf8a; }
+.tag-ready  { background: #1f5b2e; color: #86e79b; }
+.tag-wait   { background: #3a3a4a; color: #a0a0b5; }
+
+/* ---------- The game screen ---------- */
+
+#turn-banner {
+  padding: 12px;
+  border-radius: 8px;
+  background: #1e1e2a;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.05rem;
+  margin-bottom: 12px;
+}
+#turn-banner.mine { background: #3b5bdb; }
+#turn-banner.win  { background: #1f5b2e; color: #86e79b; }
+
+/* The turn countdown */
+#timer-wrap {
+  height: 6px;
+  background: #26263a;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: -6px 0 12px;
+}
+#timer-bar {
+  height: 100%;
+  width: 100%;
+  background: #7ee787;
+  border-radius: 999px;
+  transition: width 0.25s linear;
+}
+#timer-bar.low  { background: #eab308; }
+#timer-bar.out  { background: #e5484d; }
+
+/* The 10x10 board */
+#board {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 2px;
+  background: #33334a;
+  padding: 2px;
+  border-radius: 8px;
+}
+
+.cell {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  background: #1e1e2a;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.cell .num {
+  position: absolute;
+  top: 1px;
+  left: 2px;
+  font-size: 0.5rem;
+  color: #6f6f88;
+  line-height: 1;
+}
+
+.cell .hint {
+  position: absolute;
+  bottom: 1px;
+  left: 1px;
+  right: 1px;
+  font-size: 0.4rem;
+  text-align: center;
+  line-height: 1;
+  color: #c8c8d8;
+}
+
+.cell.ladder { background: #1d3a24; }
+.cell.snake  { background: #3d1f22; }
+.cell.goal   { background: #4a3a12; }
+
+/* Player tokens */
+.dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+}
+.token {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+.token.me {
+  box-shadow: 0 0 0 2px #f0f0f5;
+}
+
+#start-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 8px 10px;
+  background: #1e1e2a;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+#start-row { display: flex; gap: 4px; }
+
+#last-move {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  min-height: 1.2em;
+}
+
+/* Scoreboard */
+#score-list { list-style: none; margin-top: 12px; }
+#score-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: #1e1e2a;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+}
+#score-list .pname { display: flex; align-items: center; gap: 8px; }
+.swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.square-num {
+  font-variant-numeric: tabular-nums;
+  color: #c8c8d8;
+  min-width: 2.5em;
+  text-align: right;
+}
+
+#roll-btn, #again-btn { flex: 1; font-size: 1.1rem; padding: 14px; }
+
+/* The "play again" button takes over from Roll once someone has won. */
+#again-btn { background: #1f5b2e; border-color: #2c7a41; }
+#again-btn:hover:not(:disabled) { background: #276b38; }
