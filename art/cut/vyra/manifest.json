@@ -4,30 +4,39 @@
     "body": "vyra_body.png",
     "head": "vyra_head.png",
     "tail": "vyra_tail.png",
-    "blotch": "vyra_blotch.png"
+    "blotch": "vyra_blotch.png",
+    "full": "vyra_full.png"
+  },
+  "full": {
+    "note": "The entire snake straightened into one strip. Bend this along a spline for a jointless snake. x is arc length in source px.",
+    "file": "vyra_full.png",
+    "widthPx": 2183,
+    "heightPx": 285,
+    "centreY": 142,
+    "arcLengthPx": 2183.6
   },
   "render": {
     "bodyThicknessPx": 123,
     "bodyTextureWidthPx": 260,
-    "headLengthPx": 304.1,
-    "tailLengthPx": 283.1,
+    "headLengthPx": 305.2,
+    "tailLengthPx": 283.2,
     "textureScale": 1.0
   },
   "anchors": {
     "note": "Pixel within each sprite that sits exactly on the spline endpoint. Rotate about this point to the local tangent.",
     "head": {
-      "x": 145.1,
-      "y": 207.0,
+      "x": 145.7,
+      "y": 206.4,
       "size": [
-        396,
+        394,
         351
       ]
     },
     "tail": {
-      "x": 62.9,
+      "x": 63.0,
       "y": 77.0,
       "size": [
-        366,
+        364,
         113
       ]
     }

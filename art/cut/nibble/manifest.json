@@ -4,31 +4,40 @@
     "body": "nibble_body.png",
     "head": "nibble_head.png",
     "tail": "nibble_tail.png",
-    "blotch": "nibble_blotch.png"
+    "blotch": "nibble_blotch.png",
+    "full": "nibble_full.png"
+  },
+  "full": {
+    "note": "The entire snake straightened into one strip. Bend this along a spline for a jointless snake. x is arc length in source px.",
+    "file": "nibble_full.png",
+    "widthPx": 2264,
+    "heightPx": 247,
+    "centreY": 123,
+    "arcLengthPx": 2264.0
   },
   "render": {
     "bodyThicknessPx": 137,
     "bodyTextureWidthPx": 260,
-    "headLengthPx": 316.2,
-    "tailLengthPx": 293.2,
+    "headLengthPx": 316.1,
+    "tailLengthPx": 294.1,
     "textureScale": 1.0
   },
   "anchors": {
     "note": "Pixel within each sprite that sits exactly on the spline endpoint. Rotate about this point to the local tangent.",
     "head": {
-      "x": 261.1,
-      "y": 331.8,
+      "x": 261.9,
+      "y": 332.1,
       "size": [
-        389,
-        459
+        390,
+        460
       ]
     },
     "tail": {
-      "x": 358.0,
-      "y": 87.0,
+      "x": 360.0,
+      "y": 86.8,
       "size": [
-        430,
-        200
+        433,
+        198
       ]
     }
   },

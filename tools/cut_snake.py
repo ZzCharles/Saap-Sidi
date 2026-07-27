@@ -170,6 +170,51 @@ def main():
 
     uc, um = unwrap(clean, C, half), unwrap(marked, C, half)
 
+    # --- the WHOLE snake, straightened, as one continuous strip ---
+    # This is the piece that was already being computed and then discarded.
+    # Bending this along a spline gives a snake with no joins anywhere, because
+    # the head, body and tail were never separated.
+    #
+    # It needs its OWN sampling width. The body texture wants a narrow slice, so
+    # a tight coil does not bleed into it — but a narrow slice shears the head
+    # off, because a head is wider than the body it sits on. So this samples out
+    # to the widest part of the animal instead.
+    half_full = int(r.max() * 1.15) + 10
+    full = unwrap(clean, C, half_full)
+
+    # A slice wide enough for the head is also wide enough to catch the next
+    # coil of a tight S-curve. In every column, the animal is the unbroken run
+    # of pixels through the centreline — anything detached from it belongs to a
+    # different part of the snake and is cleared.
+    mid = full.shape[0] // 2
+    op = full[..., 3] > 24
+    keep = np.zeros_like(op)
+    for x in range(full.shape[1]):
+        col = op[:, x]
+        if not col[mid]:
+            c = np.flatnonzero(col)                 # centreline just off the art
+            if not len(c):
+                continue
+            start = c[np.argmin(np.abs(c - mid))]
+        else:
+            start = mid
+        top = start
+        while top > 0 and col[top - 1]:
+            top -= 1
+        bot = start
+        while bot < len(col) - 1 and col[bot + 1]:
+            bot += 1
+        keep[top:bot + 1, x] = True
+    full[..., 3] = np.where(keep, full[..., 3], 0)
+
+    frows = np.nonzero(full[..., 3].max(axis=1) > 10)[0]
+    centre_row = full.shape[0] // 2
+    full = full[frows.min():frows.max() + 1]
+    full_centre_y = int(centre_row - frows.min())
+    Image.fromarray(full, 'RGBA').save(p('full.png'))
+    print(f'  full   {full.shape[1]}x{full.shape[0]}  '
+          f'(widest radius {r.max():.0f}px, slice {half_full}px)')
+
     # --- body: flattest window, seam cross-faded so it tiles ---
     w = min(a.seg, int(0.4 * N))
     lo, hi = int(0.25 * N), int(0.80 * N) - w
@@ -229,7 +274,16 @@ def main():
     d = np.r_[0, np.cumsum(np.hypot(*np.diff(C, axis=0).T))]
     man = {
         "id": a.id,
-        "files": {k: f'{a.id}_{k}.png' for k in ('body', 'head', 'tail', 'blotch')},
+        "files": {k: f'{a.id}_{k}.png' for k in ('body', 'head', 'tail', 'blotch', 'full')},
+        "full": {
+            "note": "The entire snake straightened into one strip. Bend this along "
+                    "a spline for a jointless snake. x is arc length in source px.",
+            "file": f'{a.id}_full.png',
+            "widthPx": int(full.shape[1]),
+            "heightPx": int(full.shape[0]),
+            "centreY": full_centre_y,
+            "arcLengthPx": round(float(np.r_[0, np.cumsum(np.hypot(*np.diff(C, axis=0).T))][-1]), 1),
+        },
         "render": {
             "bodyThicknessPx": int(seg.shape[0]),
             "bodyTextureWidthPx": int(seg.shape[1]),
