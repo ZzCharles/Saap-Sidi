@@ -204,6 +204,13 @@ def main():
         bot = start
         while bot < len(col) - 1 and col[bot + 1]:
             bot += 1
+        # Where two coils TOUCH in the source, that unbroken run carries straight
+        # on into the neighbour and drags a slab of it along. The medial axis
+        # already knows how wide the animal really is here, so trust it: never
+        # keep more than the local radius, with a margin for the snout.
+        lim = int(r[min(x, len(r) - 1)] * 1.12) + 4
+        top = max(top, mid - lim)
+        bot = min(bot, mid + lim)
         keep[top:bot + 1, x] = True
     full[..., 3] = np.where(keep, full[..., 3], 0)
 
@@ -295,6 +302,17 @@ def main():
     Image.fromarray(tail, 'RGBA').save(p('tail.png'))
 
     d = np.r_[0, np.cumsum(np.hypot(*np.diff(C, axis=0).T))]
+
+    # The direction the snake is travelling at the neck and at the tail join,
+    # in SOURCE image coordinates. The renderer needs this and nothing else to
+    # rotate a sprite correctly: turn it by (target tangent - this angle).
+    # Deducing it afterwards by measuring the finished PNG does not work — it
+    # cannot tell a head from its own mirror image.
+    def axis_deg(i):
+        j0, j1 = max(0, i - 12), min(len(C) - 1, i + 12)
+        dx, dy = C[j1, 0] - C[j0, 0], C[j1, 1] - C[j0, 1]
+        return round(float(np.degrees(np.arctan2(dy, dx))), 2)
+
     man = {
         "id": a.id,
         "files": {k: f'{a.id}_{k}.png' for k in ('body', 'head', 'tail', 'blotch', 'full')},
@@ -317,9 +335,11 @@ def main():
         "anchors": {
             "note": "Pixel within each sprite that sits exactly on the spline endpoint. Rotate about this point to the local tangent.",
             "head": {"x": round(float(C[hi0, 0] - hx), 1), "y": round(float(C[hi0, 1] - hy), 1),
-                     "size": [int(head.shape[1]), int(head.shape[0])]},
+                     "size": [int(head.shape[1]), int(head.shape[0])],
+                     "axisDeg": axis_deg(hi0)},
             "tail": {"x": round(float(C[ti1, 0] - tx), 1), "y": round(float(C[ti1, 1] - ty), 1),
-                     "size": [int(tail.shape[1]), int(tail.shape[0])]},
+                     "size": [int(tail.shape[1]), int(tail.shape[0])],
+                     "axisDeg": axis_deg(ti1)},
         },
         "markings": {
             "texture": f'{a.id}_blotch.png',

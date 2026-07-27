@@ -11,9 +11,9 @@
     "note": "The entire snake straightened into one strip. Bend this along a spline for a jointless snake. x is arc length in source px.",
     "file": "nibble_full.png",
     "widthPx": 2262,
-    "heightPx": 245,
-    "centreY": 122,
-    "arcLengthPx": 2262.3
+    "heightPx": 227,
+    "centreY": 113,
+    "arcLengthPx": 2262.4
   },
   "render": {
     "bodyThicknessPx": 137,
@@ -30,7 +30,8 @@
       "size": [
         512,
         546
-      ]
+      ],
+      "axisDeg": -105.92
     },
     "tail": {
       "x": 439.5,
@@ -38,7 +39,8 @@
       "size": [
         607,
         280
-      ]
+      ],
+      "axisDeg": -63.5
     }
   },
   "markings": {
