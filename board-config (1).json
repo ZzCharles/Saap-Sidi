@@ -1,0 +1,202 @@
+{
+  "board": {
+    "size": 100,
+    "columns": 10,
+    "rows": 10,
+    "numbering": "boustrophedon",
+    "originCorner": "bottom-left"
+  },
+  "rules": {
+    "diceSides": 6,
+    "exactRollToWin": true,
+    "overshootBehaviour": "stay",
+    "rollSixAgain": false,
+    "minPlayers": 2,
+    "maxPlayers": 6
+  },
+  "snakes": [
+    {
+      "id": "nibble",
+      "head": 17,
+      "tail": 4,
+      "zone": "riverbank",
+      "animTier": "quick"
+    },
+    {
+      "id": "dozer",
+      "head": 32,
+      "tail": 13,
+      "zone": "jungle",
+      "animTier": "quick"
+    },
+    {
+      "id": "slick",
+      "head": 46,
+      "tail": 25,
+      "zone": "jungle",
+      "animTier": "standard"
+    },
+    {
+      "id": "vyra",
+      "head": 62,
+      "tail": 18,
+      "zone": "ruins",
+      "animTier": "standard"
+    },
+    {
+      "id": "kaal",
+      "head": 74,
+      "tail": 43,
+      "zone": "temple",
+      "animTier": "standard",
+      "hidden": true,
+      "note": "HIDDEN SNAKE. Appears as ordinary carved stonework until triggered. Head position randomised within the Temple zone per game seed."
+    },
+    {
+      "id": "maya",
+      "head": 88,
+      "tail": 50,
+      "zone": "temple",
+      "animTier": "standard",
+      "note": "Replaced Old Root. Hypnotist \u2014 pawn walks in voluntarily, no strike. See Art Bible section 10."
+    },
+    {
+      "id": "king",
+      "head": 98,
+      "tail": 24,
+      "zone": "shrine",
+      "animTier": "finale",
+      "extraTriggerSquares": [],
+      "note": "Wide head NOT enabled. Rebalanced ladders already give a 46% appearance rate at 4 players."
+    }
+  ],
+  "ladders": [
+    {
+      "id": "l1",
+      "bottom": 6,
+      "top": 36,
+      "zone": "riverbank",
+      "note": "HIDDEN LADDER. Same hint pattern as the hidden snake \u2014 teaches 'pattern = reward' early, so the hidden snake later subverts it. Bottom randomised per game seed.",
+      "hidden": true
+    },
+    {
+      "id": "l2",
+      "bottom": 14,
+      "top": 47,
+      "zone": "riverbank"
+    },
+    {
+      "id": "l3",
+      "bottom": 23,
+      "top": 41,
+      "zone": "jungle"
+    },
+    {
+      "id": "l4",
+      "bottom": 30,
+      "top": 51,
+      "zone": "jungle"
+    },
+    {
+      "id": "l5",
+      "bottom": 40,
+      "top": 61,
+      "zone": "ruins"
+    },
+    {
+      "id": "l6",
+      "bottom": 63,
+      "top": 82,
+      "zone": "ruins"
+    },
+    {
+      "id": "l7",
+      "bottom": 68,
+      "top": 92,
+      "zone": "temple"
+    },
+    {
+      "id": "l8",
+      "bottom": 76,
+      "top": 95,
+      "zone": "temple",
+      "note": "Deposits at 95, in the shrine zone, past the King's reach from below. Must stay VISIBLE \u2014 its value is that everyone can see it and races for it."
+    }
+  ],
+  "validation": {
+    "note": "Run these assertions at load. Any failure is a config error, not a runtime error.",
+    "assertions": [
+      "no ladder top equals any snake head",
+      "no snake tail equals any ladder bottom",
+      "no ladder top equals any ladder bottom (no chains)",
+      "no snake tail equals any snake head (no chains)",
+      "every square serves at most one function",
+      "all heads > all corresponding tails",
+      "all tops > all corresponding bottoms",
+      "no snake head or ladder bottom on square 100"
+    ]
+  },
+  "balanceReference": {
+    "method": "40,000 simulated games per configuration",
+    "medianRollsPerPlayer": {
+      "2p": 27,
+      "3p": 23,
+      "4p": 20,
+      "6p": 18
+    },
+    "p90RollsPerPlayer": {
+      "2p": 43,
+      "3p": 34,
+      "4p": 30,
+      "6p": 25
+    },
+    "kingAppearanceRate": {
+      "singleSquare": 0.46,
+      "wideHead": 0.69
+    },
+    "snakeEventsPerGame": {
+      "4p": 5.2
+    },
+    "note": "King drop severity has NO effect on game length. NOTE: with the rebalanced ladders the King already appears in 46% of 4p games, so the wide-head option is likely NO LONGER NEEDED \u2014 69% would dilute him.",
+    "staleWarning": "Figures predate the hidden-square proposal and any Kaal tail change. Re-run board-balance-sim.py after either is enabled."
+  },
+  "hiddenSquares": {
+    "status": "PROPOSED \u2014 not yet balance-tested",
+    "enabled": false,
+    "hintPattern": "Identical visual hint for both the hidden snake and the hidden ladder. This is the core trick: the early ladder teaches 'pattern = reward', the later snake weaponises that lesson.",
+    "rehideRule": "Fixed within a single game (re-hides after triggering, same position). Re-randomised between games via the game seed.",
+    "randomisation": {
+      "kaalHead": {
+        "zone": "temple",
+        "range": [
+          71,
+          90
+        ]
+      },
+      "hiddenLadderBottom": {
+        "zone": "riverbank_jungle",
+        "range": [
+          2,
+          30
+        ]
+      },
+      "overlapBand": {
+        "range": [
+          31,
+          60
+        ],
+        "note": "EITHER may appear here. Without this overlap players learn the zoning after one game and the trick dies permanently."
+      }
+    },
+    "openQuestions": [
+      "Balance impact of randomisation is UNSIMULATED. Run board-balance-sim.py with randomised positions and check game-length variance before enabling.",
+      "Does the hint tile show from turn one, or only once a player passes nearby?"
+    ]
+  },
+  "openDesignQuestions": [
+    "Kaal drop is 31 (74->43) but he is now the second most menacing asset. Menace should predict drop size. Proposed: move tail 43 -> 30, making it a 44 drop matching Vyra. Square 30 is free. NOT YET APPLIED.",
+    "Ladders have no identities. Eight anonymous sticks against seven named characters.",
+    "Exact-roll-to-win is untested with real players. Bounce-back on overshoot is a third option that was never simulated."
+  ],
+  "ladderLayoutNote": "Rebalanced. The original set put 66% of all board furniture in the left half, with column 9 carrying almost nothing. This set spreads it to 54/46 and cuts ladder-ladder crossings from 4 to 1, while holding 4p median at 20 rolls."
+}
