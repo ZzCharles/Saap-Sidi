@@ -1,0 +1,48 @@
+{
+  "id": "nibble",
+  "files": {
+    "body": "nibble_body.png",
+    "head": "nibble_head.png",
+    "tail": "nibble_tail.png",
+    "blotch": "nibble_blotch.png"
+  },
+  "render": {
+    "bodyThicknessPx": 137,
+    "bodyTextureWidthPx": 260,
+    "headLengthPx": 316.2,
+    "tailLengthPx": 293.2,
+    "textureScale": 1.0
+  },
+  "anchors": {
+    "note": "Pixel within each sprite that sits exactly on the spline endpoint. Rotate about this point to the local tangent.",
+    "head": {
+      "x": 261.1,
+      "y": 331.8,
+      "size": [
+        389,
+        459
+      ]
+    },
+    "tail": {
+      "x": 358.0,
+      "y": 87.0,
+      "size": [
+        430,
+        200
+      ]
+    }
+  },
+  "markings": {
+    "texture": "nibble_blotch.png",
+    "spacingPx": 137.0,
+    "taperStart": 1.0,
+    "taperEnd": 0.5,
+    "rotationJitterDeg": 4,
+    "renderOrder": "above body rope, below head and tail"
+  },
+  "notes": [
+    "body.png is seamless \u2014 right edge cross-fades into left. Tile or stretch freely.",
+    "body.png spans full texture height with no vertical padding; the rope maps texture height to rope width.",
+    "head.png and tail.png are cut from the original curved art, so they are undistorted."
+  ]
+}

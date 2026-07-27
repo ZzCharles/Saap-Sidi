@@ -1,0 +1,48 @@
+{
+  "id": "dozer",
+  "files": {
+    "body": "dozer_body.png",
+    "head": "dozer_head.png",
+    "tail": "dozer_tail.png",
+    "blotch": "dozer_blotch.png"
+  },
+  "render": {
+    "bodyThicknessPx": 122,
+    "bodyTextureWidthPx": 260,
+    "headLengthPx": 310.2,
+    "tailLengthPx": 288.2,
+    "textureScale": 1.0
+  },
+  "anchors": {
+    "note": "Pixel within each sprite that sits exactly on the spline endpoint. Rotate about this point to the local tangent.",
+    "head": {
+      "x": 102.8,
+      "y": 213.1,
+      "size": [
+        312,
+        315
+      ]
+    },
+    "tail": {
+      "x": 62.8,
+      "y": 76.9,
+      "size": [
+        369,
+        113
+      ]
+    }
+  },
+  "markings": {
+    "texture": "dozer_blotch.png",
+    "spacingPx": 121.0,
+    "taperStart": 1.0,
+    "taperEnd": 0.5,
+    "rotationJitterDeg": 4,
+    "renderOrder": "above body rope, below head and tail"
+  },
+  "notes": [
+    "body.png is seamless \u2014 right edge cross-fades into left. Tile or stretch freely.",
+    "body.png spans full texture height with no vertical padding; the rope maps texture height to rope width.",
+    "head.png and tail.png are cut from the original curved art, so they are undistorted."
+  ]
+}
