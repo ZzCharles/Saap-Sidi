@@ -10,10 +10,10 @@
   "full": {
     "note": "The entire snake straightened into one strip. Bend this along a spline for a jointless snake. x is arc length in source px.",
     "file": "vyra_full.png",
-    "widthPx": 2183,
-    "heightPx": 285,
-    "centreY": 142,
-    "arcLengthPx": 2183.6
+    "widthPx": 2181,
+    "heightPx": 283,
+    "centreY": 141,
+    "arcLengthPx": 2181.4
   },
   "render": {
     "bodyThicknessPx": 123,
@@ -25,19 +25,19 @@
   "anchors": {
     "note": "Pixel within each sprite that sits exactly on the spline endpoint. Rotate about this point to the local tangent.",
     "head": {
-      "x": 145.7,
-      "y": 206.4,
+      "x": 265.1,
+      "y": 207.2,
       "size": [
-        394,
-        351
+        517,
+        472
       ]
     },
     "tail": {
-      "x": 63.0,
-      "y": 77.0,
+      "x": 126.1,
+      "y": 140.0,
       "size": [
-        364,
-        113
+        493,
+        176
       ]
     }
   },

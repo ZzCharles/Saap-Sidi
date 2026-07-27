@@ -254,9 +254,28 @@ def main():
 
     # --- head & tail from the ORIGINAL curve, undistorted ---
     alpha = clean[..., 3]
-    def cut(i0, i1, pad=30):
+
+    def largest_island(img):
+        """A cut sprite should be ONE piece. Anything detached is a fragment of
+        another part of the snake that happened to fall inside the crop box."""
+        m = img[..., 3] > 24
+        lab, n = ndimage.label(m)
+        if n <= 1:
+            return img, 0
+        sizes = ndimage.sum(m, lab, range(1, n + 1))
+        keep = lab == (int(np.argmax(sizes)) + 1)
+        dropped = int(m.sum() - keep.sum())
+        img = img.copy()
+        img[..., 3] = np.where(keep, img[..., 3], 0)
+        return img, dropped
+
+    def cut(i0, i1, pad=70):
         xs, ys = C[i0:i1, 0], C[i0:i1, 1]
-        rr = r[i0:i1].max() + pad
+        # The medial-axis radius is the biggest circle that FITS INSIDE the
+        # shape, so a snout, jaw or brow reaches further than it. Padding by a
+        # flat 30px cropped the face off nearly every sprite; scale with the
+        # animal instead.
+        rr = r[i0:i1].max() * 1.7 + pad
         x0, y0 = max(0, int(xs.min() - rr)), max(0, int(ys.min() - rr))
         x1, y1 = min(alpha.shape[1], int(xs.max() + rr)), min(alpha.shape[0], int(ys.max() + rr))
         sub = alpha[y0:y1, x0:x1] > 10
@@ -268,6 +287,10 @@ def main():
     hi0, ti1 = int(a.head_frac * N), int(a.tail_frac * N)
     head, hx, hy = cut(hi0, N)
     tail, tx, ty = cut(0, ti1)
+    head, hdrop = largest_island(head)
+    tail, tdrop = largest_island(tail)
+    if hdrop or tdrop:
+        print(f'  cleaned stray fragments: head {hdrop}px, tail {tdrop}px')
     Image.fromarray(head, 'RGBA').save(p('head.png'))
     Image.fromarray(tail, 'RGBA').save(p('tail.png'))
 

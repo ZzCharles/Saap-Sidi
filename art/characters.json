@@ -1,0 +1,42 @@
+{
+  "note": "How each snake behaves on the board. Positions come from the database; everything here is art direction, tuned by eye and not derived.",
+  "space": "board units, 1000 = the full board width",
+
+  "snakes": {
+    "maya": {
+      "status": "finished",
+      "headSquare": 88,
+      "tailSquare": 50,
+      "render": {
+        "sizeUnits": 34,
+        "headScalePct": 100,
+        "headAngleNudgeDeg": -10,
+        "headFacingMeasuredDeg": -30,
+        "headFlipX": false,
+        "headFlipY": true
+      },
+      "idle": { "strength": 0.7, "speed": 0.8 },
+      "strike": { "liftUnits": 34, "reachPct": 73 },
+      "path": {
+        "controlPoints": [
+          [950, 550], [962, 474], [951, 415], [884, 368],
+          [810, 333], [809, 241], [740, 228], [725, 152]
+        ]
+      }
+    },
+
+    "nibble":  { "status": "untuned", "headSquare": 17, "tailSquare": 4,
+                 "render": { "sizeUnits": 38 }, "idle": { "strength": 0.95, "speed": 1.5 } },
+    "dozer":   { "status": "untuned", "headSquare": 32, "tailSquare": 13,
+                 "render": { "sizeUnits": 60 }, "idle": { "strength": 0.38, "speed": 0.45 } },
+    "vyra":    { "status": "untuned", "headSquare": 62, "tailSquare": 18,
+                 "render": { "sizeUnits": 54 }, "idle": { "strength": 0.55, "speed": 0.7 } },
+    "kaal":    { "status": "no sprites - tracing fails on his awake pose",
+                 "headSquare": 74, "tailSquare": 43 },
+    "slick":   { "status": "no source illustration, so no continuous strip",
+                 "headSquare": 46, "tailSquare": 25 },
+    "king":    { "status": "no artwork yet", "headSquare": 98, "tailSquare": 24 }
+  },
+
+  "whyHeadFlipY": "Every snake so far needs headFlipY. The measured facing angle comes out consistently mirrored, which means the measurement has a sign wrong rather than the art. Worth fixing at source once a second snake is tuned and confirms the pattern - until then the flag is honest about what is actually happening."
+}

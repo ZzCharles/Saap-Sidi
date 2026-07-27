@@ -13,37 +13,37 @@
     "widthPx": 2216,
     "heightPx": 271,
     "centreY": 135,
-    "arcLengthPx": 2216.5
+    "arcLengthPx": 2216.1
   },
   "render": {
     "bodyThicknessPx": 122,
     "bodyTextureWidthPx": 260,
     "headLengthPx": 310.2,
-    "tailLengthPx": 288.2,
+    "tailLengthPx": 288.1,
     "textureScale": 1.0
   },
   "anchors": {
     "note": "Pixel within each sprite that sits exactly on the spline endpoint. Rotate about this point to the local tangent.",
     "head": {
-      "x": 102.8,
+      "x": 193.8,
       "y": 213.1,
       "size": [
-        312,
-        315
+        403,
+        406
       ]
     },
     "tail": {
-      "x": 62.8,
-      "y": 76.9,
+      "x": 126.9,
+      "y": 140.9,
       "size": [
-        369,
-        113
+        501,
+        177
       ]
     }
   },
   "markings": {
     "texture": "dozer_blotch.png",
-    "spacingPx": 121.0,
+    "spacingPx": 120.0,
     "taperStart": 1.0,
     "taperEnd": 0.5,
     "rotationJitterDeg": 4,

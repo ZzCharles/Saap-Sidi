@@ -10,40 +10,40 @@
   "full": {
     "note": "The entire snake straightened into one strip. Bend this along a spline for a jointless snake. x is arc length in source px.",
     "file": "maya_full.png",
-    "widthPx": 2710,
+    "widthPx": 2713,
     "heightPx": 179,
     "centreY": 89,
-    "arcLengthPx": 2710.4
+    "arcLengthPx": 2713.0
   },
   "render": {
     "bodyThicknessPx": 108,
     "bodyTextureWidthPx": 260,
-    "headLengthPx": 379.2,
-    "tailLengthPx": 352.2,
+    "headLengthPx": 379.1,
+    "tailLengthPx": 352.1,
     "textureScale": 1.0
   },
   "anchors": {
     "note": "Pixel within each sprite that sits exactly on the spline endpoint. Rotate about this point to the local tangent.",
     "head": {
-      "x": 138.2,
-      "y": 355.1,
+      "x": 228.6,
+      "y": 352.9,
       "size": [
-        244,
+        333,
         448
       ]
     },
     "tail": {
-      "x": 63.3,
-      "y": 66.0,
+      "x": 126.4,
+      "y": 130.0,
       "size": [
-        463,
-        144
+        589,
+        208
       ]
     }
   },
   "markings": {
     "texture": "maya_blotch.png",
-    "spacingPx": 59.0,
+    "spacingPx": 56.0,
     "taperStart": 1.0,
     "taperEnd": 0.5,
     "rotationJitterDeg": 4,
